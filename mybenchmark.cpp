@@ -1,10 +1,12 @@
-#include <benchmark/benchmark.h>
+
 
 #include <iostream>
 #include <cassert>
 #include <memory>
 #include <parquet/api/reader.h>
 #include <parquet/types.h>
+
+#include <benchmark/benchmark.h>
 
 #include <chrono>
 
@@ -86,8 +88,22 @@ static void BM_parquet_reader(benchmark::State& state) {
   }
 }
 
-
-
 BENCHMARK(BM_parquet_reader);
 
-BENCHMARK_MAIN();
+
+int main()
+{
+    int argc = 1;
+    char arg0_default[] = "benchmark";
+    char *args_default = arg0_default;
+    char **argv = &args_default;
+    benchmark::Initialize(&argc, argv);
+    benchmark::RunSpecifiedBenchmarks();
+    benchmark::Shutdown();
+
+    return 0;
+}
+
+
+
+// BENCHMARK_MAIN();
