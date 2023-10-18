@@ -1,4 +1,3 @@
-#include <benchmark/benchmark.h>
 #include <iostream>
 #include <cassert>
 #include <memory>
@@ -6,17 +5,14 @@
 #include <parquet/types.h>
 
 
-
-static void cpp_parquet_reader(benchmark::State& state){
-  for (auto _ : state){
-
+int main(int argc, char** argv) {
     const char PARQUET_FILENAME[] = "catalog_sales.parquet";
     int counter = 0;
 
     std::vector<int32_t> int32_values;
     std::vector<double> double_values;
 
-     try {
+  try {
     // Creating a ParquetReader instance
     std::unique_ptr<parquet::ParquetFileReader> parquet_reader = parquet::ParquetFileReader::OpenFile(PARQUET_FILENAME, false);
 
@@ -77,32 +73,24 @@ static void cpp_parquet_reader(benchmark::State& state){
     }
   } catch (const std::exception& e) {
     std::cerr << "Parquet read error: " << e.what() << std::endl;
+    return -1;
   }
 
-  std::cout << "INT32 Values:" << std::endl;
-  for (const auto& x : int32_values) {
-    std::cout << x << std::endl;
-  }
-  std::cout << std::endl;
+//   std::cout << "INT32 Values:" << std::endl;
+//   for (const auto& x : int32_values) {
+//     std::cout << x << std::endl;
+//   }
+//   std::cout << std::endl;
 
-  std::cout << "DOUBLE Values:" << std::endl;
-  for (const auto& x : double_values) {
-  std::cout << x << std::endl;
-  }
-  std::cout << std::endl;
+//   std::cout << "DOUBLE Values:" << std::endl;
+//   for (const auto& x : double_values) {
+//   std::cout << x << std::endl;
+//   }
+//   std::cout << std::endl;
 
-  std::cout << counter << std::endl;
-  std::cout << "Parquet file Reading Complete" << std::endl;
-  }
-    
-}
-
-int main(int argc, char** argv) {
-  
+//   std::cout << counter << std::endl;
+//   std::cout << "Parquet file Reading Complete" << std::endl;
 
   return 0;
 }
 
-BENCHMARK(cpp_parquet_reader);
-
-BENCHMARK_MAIN();

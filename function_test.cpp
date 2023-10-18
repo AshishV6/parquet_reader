@@ -1,4 +1,4 @@
-#include <benchmark/benchmark.h>
+
 
 #include <iostream>
 #include <cassert>
@@ -78,16 +78,6 @@ void cpp_parquet_reader(){
 }
 
 
-
-
-static void BM_parquet_reader(benchmark::State& state) {
-  for (auto _ : state){
+int main(int argc, char** argv){
     cpp_parquet_reader();
-  }
 }
-
-
-
-BENCHMARK(BM_parquet_reader);
-
-BENCHMARK_MAIN();
