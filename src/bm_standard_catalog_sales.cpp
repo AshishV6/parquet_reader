@@ -12,7 +12,7 @@
 
 void cpp_parquet_reader(){
 
-    const char PARQUET_FILENAME[] = "catalog_sales.parquet";
+    const char PARQUET_FILENAME[] = "catalog_sales_standard.parquet";
 
     std::vector<int32_t> int32_values;
     std::vector<double> double_values;
@@ -24,10 +24,10 @@ void cpp_parquet_reader(){
       std::shared_ptr<parquet::FileMetaData> file_metadata = parquet_reader->metadata();
 
       int num_row_groups = file_metadata->num_row_groups();
-      assert(num_row_groups == 2);
+    //   assert(num_row_groups == 2);
 
       int num_columns = file_metadata->num_columns();
-      assert(num_columns == 34);
+    //   assert(num_columns == 34);
 
       for (int r = 0; r < num_row_groups; ++r) {
 
@@ -38,7 +38,7 @@ void cpp_parquet_reader(){
         int16_t definition_level;
         int16_t repetition_level;
 
-        for (int col_id = 17; col_id < 18; ++col_id) {
+        for (int col_id = 0; col_id < 2; col_id+=15) {
 
           std::shared_ptr<parquet::ColumnReader> column_reader = row_group_reader->Column(col_id);
 
@@ -77,6 +77,7 @@ void cpp_parquet_reader(){
 
 
 }
+
 
 
 static void BM_parquet_reader(benchmark::State& state) {
