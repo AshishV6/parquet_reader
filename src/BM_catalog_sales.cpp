@@ -35,8 +35,8 @@ void cpp_parquet_reader(){
 
         int64_t values_read = 0;
         int64_t rows_read = 0;
-        int16_t definition_level;
-        int16_t repetition_level;
+        std::vector<int16_t> definition_levels;
+        std::vector<int16_t> repetition_levels;
 
         for (int col_id = 0; col_id < 16; col_id+=15) {
 
@@ -46,11 +46,11 @@ void cpp_parquet_reader(){
 
           if (column_type == parquet::Type::INT32) {
             parquet::Int32Reader* int32_reader = static_cast<parquet::Int32Reader*>(column_reader.get());
-            int32_t value;
+            std::vector<int32_t> batch_values(8192);
             while (int32_reader->HasNext()) {
               try {
-                rows_read = int32_reader->ReadBatch(1, &definition_level, &repetition_level, &value, &values_read);
-                int32_values.push_back(value);
+                rows_read = int32_reader->ReadBatch(8192, definition_levels.data(), repetition_levels.data(), batch_values.data(), &values_read);
+                int32_values.insert(int32_values.end(), batch_values.begin(), batch_values.begin() + rows_read);
               } catch (const std::exception& e) {
                 break;
               }
@@ -58,11 +58,11 @@ void cpp_parquet_reader(){
             }
           } else if (column_type == parquet::Type::DOUBLE) {
             parquet::DoubleReader* double_reader = static_cast<parquet::DoubleReader*>(column_reader.get());
-            double value;
+            std::vector<double> batch_values(8192);
             while (double_reader->HasNext()) {
               try {
-                rows_read = double_reader->ReadBatch(1, &definition_level, &repetition_level, &value, &values_read);
-                double_values.push_back(value);
+                rows_read = double_reader->ReadBatch(8192, definition_levels.data(), repetition_levels.data(), batch_values.data(), &values_read);
+                double_values.insert(double_values.end(), batch_values.begin(), batch_values.begin() + rows_read);
               } catch (const std::exception& e) {
                 break;
               }
