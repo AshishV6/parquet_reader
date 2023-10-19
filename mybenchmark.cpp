@@ -1,5 +1,4 @@
 
-
 #include <iostream>
 #include <cassert>
 #include <memory>
@@ -80,15 +79,15 @@ void cpp_parquet_reader(){
 }
 
 
-
-
 static void BM_parquet_reader(benchmark::State& state) {
   for (auto _ : state){
     cpp_parquet_reader();
   }
 }
 
+
 BENCHMARK(BM_parquet_reader);
+                      
 
 
 int main()
@@ -107,3 +106,20 @@ int main()
 
 
 // BENCHMARK_MAIN();
+
+
+
+
+// int main(int argc, char** argv) {                                     
+//     char arg0_default[] = "benchmark";                                  
+//     char* args_default = arg0_default;                                  
+//     if (!argv) {                                                        
+//       argc = 1;                                                         
+//       argv = &args_default;                                             
+//     }                                                                   
+//     ::benchmark::Initialize(&argc, argv);                               
+//     if (::benchmark::ReportUnrecognizedArguments(argc, argv)) return 1; 
+//     ::benchmark::RunSpecifiedBenchmarks();                              
+//     ::benchmark::Shutdown();                                            
+//     return 0;                                                           
+//   }  
